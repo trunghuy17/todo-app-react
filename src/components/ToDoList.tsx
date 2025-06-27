@@ -4,11 +4,16 @@ import { DeleteOutlined } from "@ant-design/icons";
 
 type Props = {
   showCompleted?: boolean;
+  searchTerm?:string;
 };
 
-function ToDoList({ showCompleted = false }: Props) {
+function ToDoList({ showCompleted = false, searchTerm='' }: Props) {
   const { todos, toggleTodo, deleteTodo, clearCompleted } = useToDo();
-  const data = showCompleted ? todos.filter((t) => t.completed) : todos;
+  let data = showCompleted ? todos.filter((t) => t.completed) : todos;
+
+  if(searchTerm && showCompleted){
+    data = data.filter((todo) => todo.text.toLowerCase().includes(searchTerm.toLowerCase()));
+  }
 
   return (
     <>

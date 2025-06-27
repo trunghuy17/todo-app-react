@@ -20,7 +20,7 @@ function ToDoForm() {
         onChange={(e) => setText(e.target.value)}
         onPressEnter={handleAdd}
       />
-      <Button type="primary" onClick={handleAdd}>Add</Button>
+      <Button type="primary" onClick={handleAdd} style={{marginLeft:10}}>Add</Button>
     </div>
   );
 }
