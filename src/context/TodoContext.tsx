@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { Todo } from '../types/ToDo'
 
 type TodoContextType = {
@@ -19,7 +19,21 @@ export const useToDo = () => {
 };
 
 export const TodoProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-  const [todos, setTodos] = useState<Todo[]> ([]);
+  const [todos, setTodos] = useState<Todo[]> (()=>{
+    const  stored = localStorage.getItem('todos');
+    if(stored) {
+      try{
+        return JSON.parse(stored);
+      }catch (e) {
+        console.error('Invalid todos in localStorage');
+      }
+    }
+    return [];
+  });
+
+  useEffect(()=>{
+    localStorage.setItem('todos', JSON.stringify(todos));
+  },[todos]);
 
   const addTodo = (text:string) =>{
     setTodos(prev => [...prev, {id: Date.now().toString(), text, completed: false}]);
